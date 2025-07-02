@@ -1,5 +1,5 @@
 import Head from "next/head";
-import HoldingPage from "@/components/holding/holdingpage";
+import HoldingPage from "../components/holding/holdingPage";
 import META_TAGS from "../lib/meta_tags";
 
 export default function Page() {
