@@ -83,7 +83,7 @@ export default function Content({ fade, darkMode }) {
                   {...commonProps}
                   initial={{ x: 100, opacity: 0 }}
                   animate={thirdAnimated ? { x: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 2, ease: "easeInOut" }}
                   onAnimationComplete={() => setFourthAnimated(true)}
                   style={{ zIndex: 6 }}
                 />
@@ -95,9 +95,9 @@ export default function Content({ fade, darkMode }) {
               return (
                 <motion.img
                   {...commonProps}
-                  initial={{ x: 60, opacity: 0 }} // 👈 animate from right
-                  animate={fourthAnimated ? { x: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.8 }}
+                  initial={{ x: 60, opacity: 0 }}
+                  animate={fourthAnimated ? { x: -2, opacity: 1 } : {}}
+                  transition={{ duration: 2, ease: "easeInOut" }}
                   style={{ zIndex: 5 }}
                 />
               );
@@ -108,9 +108,9 @@ export default function Content({ fade, darkMode }) {
               return (
                 <motion.img
                   {...commonProps}
-                  initial={{ y: -200, opacity: 0 }}
+                  initial={{ y: -400, opacity: 0 }}
                   animate={{ y: 0, opacity: 1 }}
-                  transition={{ duration: 1 }}
+                  transition={{ duration: 3, ease: "linear" }}
                   onAnimationComplete={() => setFirstAnimated(true)}
                   style={{ zIndex: 10 }}
                 />
@@ -122,9 +122,9 @@ export default function Content({ fade, darkMode }) {
               return (
                 <motion.img
                   {...commonProps}
-                  initial={{ x: -60, opacity: 0 }}
+                  initial={{ x: -40, opacity: 0 }}
                   animate={firstAnimated ? { x: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.8 }}
+                  transition={{ duration: 2, ease: "easeInOut" }}
                   onAnimationComplete={() => setSecondAnimated(true)}
                   style={{ zIndex: 5 }}
                 />
@@ -136,9 +136,13 @@ export default function Content({ fade, darkMode }) {
               return (
                 <motion.img
                   {...commonProps}
-                  initial={{ x: -50, opacity: 0 }}
+                  initial={{ x: -20, opacity: 0 }}
                   animate={secondAnimated ? { x: 0, opacity: 1 } : {}}
-                  transition={{ duration: 0.6, delay: 0.2 * (index - 4) }}
+                  transition={{
+                    duration: 1,
+                    delay: 0.9 * (index - 4),
+                    ease: "easeInOut",
+                  }}
                   onAnimationComplete={() =>
                     setWs3To8Completed((prev) => prev + 1)
                   }
