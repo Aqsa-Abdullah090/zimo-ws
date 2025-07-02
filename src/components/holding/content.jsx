@@ -6,11 +6,13 @@ import { COMINGSOON_TABS } from "./lib";
 
 export default function Content({ fade, darkMode }) {
   const [tab, setTab] = useState(COMINGSOON_TABS.countdown);
-  const [firstAnimated, setFirstAnimated] = useState(false);
-  const [secondAnimated, setSecondAnimated] = useState(false);
-  const [thirdAnimated, setThirdAnimated] = useState(false);
-  const [ws3To8Completed, setWs3To8Completed] = useState(0);
+  const [firstAnimated, setFirstAnimated] = useState(false); // WS 1
+  const [secondAnimated, setSecondAnimated] = useState(false); // WS 2
+  const [thirdAnimated, setThirdAnimated] = useState(false); // WS 3–8 done
+  const [fourthAnimated, setFourthAnimated] = useState(false); // W.svg done
+  const [ws3To8Completed, setWs3To8Completed] = useState(0); // Counter
 
+  // Update tab every 5 seconds
   useEffect(() => {
     let startTime = Date.now();
     let frameId;
@@ -30,32 +32,33 @@ export default function Content({ fade, darkMode }) {
     return () => cancelAnimationFrame(frameId);
   }, [tab]);
 
+  // Trigger W.svg after WS 3–8 complete
+  useEffect(() => {
+    if (ws3To8Completed === 6) {
+      setThirdAnimated(true);
+    }
+  }, [ws3To8Completed]);
+
   const images = [
-    "/assets/holding/W.svg",
-    "/assets/holding/S.svg",
-    "/assets/holding/ZIMO WS 1.svg", // index 2
-    "/assets/holding/ZIMO WS 2.svg", // index 3
-    "/assets/holding/ZIMO WS 3.svg",
-    "/assets/holding/ZIMO WS 4.svg",
-    "/assets/holding/ZIMO WS 5.svg",
-    "/assets/holding/ZIMO WS 6.svg",
-    "/assets/holding/ZIMO WS 7.svg",
-    "/assets/holding/ZIMO WS 8.svg",
+    "/assets/holding/W.svg", // 0
+    "/assets/holding/S.svg", // 1
+    "/assets/holding/ZIMO WS 1.svg", // 2
+    "/assets/holding/ZIMO WS 2.svg", // 3
+    "/assets/holding/ZIMO WS 3.svg", // 4
+    "/assets/holding/ZIMO WS 4.svg", // 5
+    "/assets/holding/ZIMO WS 5.svg", // 6
+    "/assets/holding/ZIMO WS 6.svg", // 7
+    "/assets/holding/ZIMO WS 7.svg", // 8
+    "/assets/holding/ZIMO WS 8.svg", // 9
   ];
 
+  // Preload images
   useEffect(() => {
     images.forEach((src) => {
       const img = new Image();
       img.src = src;
     });
   }, []);
-
-  // Once all 6 WS 3–8 animations complete, trigger W.svg
-  useEffect(() => {
-    if (ws3To8Completed === 6) {
-      setThirdAnimated(true);
-    }
-  }, [ws3To8Completed]);
 
   return (
     <>
@@ -66,12 +69,14 @@ export default function Content({ fade, darkMode }) {
               key: index,
               src,
               alt: `Logo ${index}`,
-              className: `h-[60px] sm:h-[46px] 3xl:h-[80px] ${darkMode ? "invert" : ""}`,
+              className: `h-[60px] sm:h-[46px] 3xl:h-[80px] ${
+                darkMode ? "invert" : ""
+              }`,
               draggable: false,
               onDragStart: (e) => e.preventDefault(),
             };
 
-            // Animate W.svg (index 0) from right after all WS 3–8 finish
+            // W.svg (index 0): animate from right after WS 3–8
             if (index === 0) {
               return (
                 <motion.img
@@ -79,17 +84,26 @@ export default function Content({ fade, darkMode }) {
                   initial={{ x: 100, opacity: 0 }}
                   animate={thirdAnimated ? { x: 0, opacity: 1 } : {}}
                   transition={{ duration: 0.8 }}
+                  onAnimationComplete={() => setFourthAnimated(true)}
                   style={{ zIndex: 6 }}
                 />
               );
             }
 
-            // S.svg (index 1) static
+            // S.svg (index 1): animate from right to left after W.svg
             if (index === 1) {
-              return <img {...commonProps} />;
+              return (
+                <motion.img
+                  {...commonProps}
+                  initial={{ x: 60, opacity: 0 }} // 👈 animate from right
+                  animate={fourthAnimated ? { x: 0, opacity: 1 } : {}}
+                  transition={{ duration: 0.8 }}
+                  style={{ zIndex: 5 }}
+                />
+              );
             }
 
-            // WS 1 (index 2): Drop from top
+            // WS 1 (index 2): drop from top
             if (index === 2) {
               return (
                 <motion.img
@@ -103,7 +117,7 @@ export default function Content({ fade, darkMode }) {
               );
             }
 
-            // WS 2 (index 3): Slide from left after WS 1
+            // WS 2 (index 3): slide from left after WS 1
             if (index === 3) {
               return (
                 <motion.img
@@ -117,7 +131,7 @@ export default function Content({ fade, darkMode }) {
               );
             }
 
-            // WS 3–8 (index 4–9): One by one after WS 2
+            // WS 3–8 (index 4–9): sequential after WS 2
             if (index >= 4 && index <= 9) {
               return (
                 <motion.img
