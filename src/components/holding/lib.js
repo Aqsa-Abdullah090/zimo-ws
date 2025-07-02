@@ -1,10 +1,10 @@
 export const COMINGSOON_TABS = {
   // just render logo
-  // logo: 1,
+  logo: 1,
   // render countdown also
-  countdown: 1,
+  countdown: 2,
   // also render comming soon
-  comingsoon: 2,
+  comingsoon: 3,
 };
 
 export const COMING_SOON = [

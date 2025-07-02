@@ -4,33 +4,36 @@ import Countdown from "./countdown";
 import ComingSoon from "./coming-soon";
 import { COMINGSOON_TABS } from "./lib";
 
-export default function Content({ fade, darkMode }) {
-  const [tab, setTab] = useState(COMINGSOON_TABS.countdown);
+export default function Content({ darkMode }) {
+  const [tab, setTab] = useState(COMINGSOON_TABS.logo);
   const [firstAnimated, setFirstAnimated] = useState(false); // WS 1
   const [secondAnimated, setSecondAnimated] = useState(false); // WS 2
   const [thirdAnimated, setThirdAnimated] = useState(false); // WS 3–8 done
   const [fourthAnimated, setFourthAnimated] = useState(false); // W.svg done
   const [ws3To8Completed, setWs3To8Completed] = useState(0); // Counter
 
-  // Update tab every 5 seconds
-  useEffect(() => {
-    let startTime = Date.now();
-    let frameId;
+useEffect(() => {
+  const timers = [];
 
-    const tick = () => {
-      const now = Date.now();
-      const elapsed = now - startTime;
-      if (elapsed >= 5000) {
-        if (tab !== COMINGSOON_TABS.comingsoon) {
-          setTab((prev) => prev + 1);
-        }
-        startTime = now;
-      }
-      frameId = requestAnimationFrame(tick);
-    };
-    frameId = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frameId);
-  }, [tab]);
+  if (tab === COMINGSOON_TABS.logo) {
+    const timer1 = setTimeout(() => {
+      setTab((prev) => prev + 1);
+    }, 13000);
+    timers.push(timer1);
+  }
+
+  if (tab === COMINGSOON_TABS.countdown) {
+    const timer2 = setTimeout(() => {
+      setTab((prev) => prev + 1);
+    }, 5000);
+    timers.push(timer2);
+  }
+
+  return () => {
+    timers.forEach(clearTimeout);
+  };
+}, [tab]);
+
 
   // Trigger W.svg after WS 3–8 complete
   useEffect(() => {
