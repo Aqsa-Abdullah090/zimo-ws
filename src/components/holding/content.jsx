@@ -4,47 +4,67 @@ import Countdown from "./countdown";
 import ComingSoon from "./coming-soon";
 import { COMINGSOON_TABS } from "./lib";
 
-export default function Content({ currentImageIndex, images, fade, darkMode }) {
+export default function Content({ fade, darkMode }) {
   const [tab, setTab] = useState(COMINGSOON_TABS.countdown);
 
   // Update tab every 5 seconds
   useEffect(() => {
-  let startTime = Date.now();
-  let frameId;
+    let startTime = Date.now();
+    let frameId;
 
-  const tick = () => {
-    const now = Date.now();
-    const elapsed = now - startTime;
-
-    if (elapsed >= 5000) {
-      if (tab !== COMINGSOON_TABS.comingsoon) {
-        setTab((prev) => prev + 1);
+    const tick = () => {
+      const now = Date.now();
+      const elapsed = now - startTime;
+      if (elapsed >= 5000) {
+        if (tab !== COMINGSOON_TABS.comingsoon) {
+          setTab((prev) => prev + 1);
+        }
+        startTime = now;
       }
-      startTime = now; // reset timer
-    }
-
+      frameId = requestAnimationFrame(tick);
+    };
     frameId = requestAnimationFrame(tick);
-  };
+    return () => cancelAnimationFrame(frameId);
+  }, [tab]);
 
-  frameId = requestAnimationFrame(tick);
+  // LOGO IMAGES
+  const images = [
+    "/assets/holding/Logo W.svg",
+    "/assets/holding/Logo S.svg",
+    "/assets/holding/Rectangle1.svg",
+    "/assets/holding/Rectangle2.svg",
+    "/assets/holding/Rectangle3.svg",
+    "/assets/holding/Rectangle4.svg",
+    "/assets/holding/Rectangle5.svg",
+    "/assets/holding/Rectangle6.svg",
+    "/assets/holding/Rectangle7.svg",
+    "/assets/holding/Rectangle8.svg",
+  ];
 
-  return () => cancelAnimationFrame(frameId);
-}, [tab]);
-
+  // Preload images
+  useEffect(() => {
+    images.forEach((src) => {
+      const img = new Image();
+      img.src = src;
+    });
+  }, []);
 
   return (
     <>
       {/* Centered image */}
       <motion.div className="absolute top-1/2 -translate-y-1/2 w-full flex flex-col items-center justify-center">
-        <img
-          src={images[currentImageIndex]}
-          alt="Logo"
-          className={`w-[180px] sm:w-[220px] 3xl:w-[256px] transition-opacity ${
-            fade ? "opacity-100 duration-[2000ms]" : "opacity-0 duration-1000"
-          } ${darkMode ? "invert" : ""}`}
-          draggable="false"
-          onDragStart={(e) => e.preventDefault()}
-        />
+        <div className="absolute top-1/2 -translate-y-1/2 w-full flex flex-row items-center justify-center gap-[2px]">
+          {images.map((src, index) => (
+            <img
+              key={index}
+              src={src}
+              alt={`Logo ${index}`}
+              className={`h-[60px] sm:h-[46px] 3xl:h-[80px] ${darkMode ? "invert" : ""}`}
+              draggable="false"
+              onDragStart={(e) => e.preventDefault()}
+            />
+          ))}
+        </div>
       </motion.div>
 
       {/* Coming Soon */}

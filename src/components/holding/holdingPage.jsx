@@ -4,21 +4,8 @@ import Content from "./content";
 import Footer from "./footer";
 
 export default function HoldingPage() {
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fade, setFade] = useState(true);
   const [darkMode, setDarkMode] = useTheme();
-
-  const images = [
-    "/assets/holding/ZIMO WS Duo.svg"
-  ];
-
-  // Preload images
-  useEffect(() => {
-    images.forEach((src) => {
-      const img = new Image();
-      img.src = src;
-    });
-  }, []);
 
   return (
     <div
@@ -27,8 +14,6 @@ export default function HoldingPage() {
       }`}
     >
       <Content
-        currentImageIndex={currentImageIndex}
-        images={images}
         fade={fade}
         darkMode={darkMode}
       />
