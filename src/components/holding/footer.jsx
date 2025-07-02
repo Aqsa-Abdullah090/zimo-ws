@@ -7,7 +7,7 @@ export default function Footer({ darkMode }) {
       {/* Centered text */}
       <div className="w-full text-center sm:w-auto sm:absolute sm:left-1/2 sm:-translate-x-1/2 pb-[28px] 3xl:pb-[48px]">
         <p className="font-arial">
-          © COPYRIGHT 2025 OMNIUM SOCIAL <span>I</span> ZIMO GROUP LIMITED. ALL RIGHTS RESERVED.
+          © COPYRIGHT 2025 WS <span>I</span> ZIMO GROUP LIMITED. ALL RIGHTS RESERVED.
         </p>
       </div>
 

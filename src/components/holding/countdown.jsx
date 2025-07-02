@@ -5,7 +5,7 @@ import moment from "moment";
 import { motion } from "framer-motion";
 import { COMINGSOON_TABS } from "./lib";
 
-const launchDate = new Date(moment.utc("2025-12-02").format());
+const launchDate = new Date(moment.utc("2025-12-18").format());
 
 function Countdown({ tab, darkMode }) {
   const [isClient, setIsClient] = useState(false);
