@@ -29,16 +29,16 @@ export default function Content({ fade, darkMode }) {
 
   // LOGO IMAGES
   const images = [
-    "/assets/holding/Logo W.svg",
-    "/assets/holding/Logo S.svg",
-    "/assets/holding/Rectangle1.svg",
-    "/assets/holding/Rectangle2.svg",
-    "/assets/holding/Rectangle3.svg",
-    "/assets/holding/Rectangle4.svg",
-    "/assets/holding/Rectangle5.svg",
-    "/assets/holding/Rectangle6.svg",
-    "/assets/holding/Rectangle7.svg",
-    "/assets/holding/Rectangle8.svg",
+    "/assets/holding/W.svg",
+    "/assets/holding/S.svg",
+    "/assets/holding/ZIMO WS 1.svg",
+    "/assets/holding/ZIMO WS 2.svg",
+    "/assets/holding/ZIMO WS 3.svg",
+    "/assets/holding/ZIMO WS 4.svg",
+    "/assets/holding/ZIMO WS 5.svg",
+    "/assets/holding/ZIMO WS 6.svg",
+    "/assets/holding/ZIMO WS 7.svg",
+    "/assets/holding/ZIMO WS 8.svg",
   ];
 
   // Preload images
