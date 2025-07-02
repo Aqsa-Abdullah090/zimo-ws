@@ -6,8 +6,11 @@ import { COMINGSOON_TABS } from "./lib";
 
 export default function Content({ fade, darkMode }) {
   const [tab, setTab] = useState(COMINGSOON_TABS.countdown);
+  const [firstAnimated, setFirstAnimated] = useState(false);
+  const [secondAnimated, setSecondAnimated] = useState(false);
+  const [thirdAnimated, setThirdAnimated] = useState(false);
+  const [ws3To8Completed, setWs3To8Completed] = useState(0);
 
-  // Update tab every 5 seconds
   useEffect(() => {
     let startTime = Date.now();
     let frameId;
@@ -27,12 +30,11 @@ export default function Content({ fade, darkMode }) {
     return () => cancelAnimationFrame(frameId);
   }, [tab]);
 
-  // LOGO IMAGES
   const images = [
     "/assets/holding/W.svg",
     "/assets/holding/S.svg",
-    "/assets/holding/ZIMO WS 1.svg",
-    "/assets/holding/ZIMO WS 2.svg",
+    "/assets/holding/ZIMO WS 1.svg", // index 2
+    "/assets/holding/ZIMO WS 2.svg", // index 3
     "/assets/holding/ZIMO WS 3.svg",
     "/assets/holding/ZIMO WS 4.svg",
     "/assets/holding/ZIMO WS 5.svg",
@@ -41,7 +43,6 @@ export default function Content({ fade, darkMode }) {
     "/assets/holding/ZIMO WS 8.svg",
   ];
 
-  // Preload images
   useEffect(() => {
     images.forEach((src) => {
       const img = new Image();
@@ -49,21 +50,91 @@ export default function Content({ fade, darkMode }) {
     });
   }, []);
 
+  // Once all 6 WS 3–8 animations complete, trigger W.svg
+  useEffect(() => {
+    if (ws3To8Completed === 6) {
+      setThirdAnimated(true);
+    }
+  }, [ws3To8Completed]);
+
   return (
     <>
-      {/* Centered image */}
       <motion.div className="absolute top-1/2 -translate-y-1/2 w-full flex flex-col items-center justify-center">
         <div className="absolute top-1/2 -translate-y-1/2 w-full flex flex-row items-center justify-center gap-[2px]">
-          {images.map((src, index) => (
-            <img
-              key={index}
-              src={src}
-              alt={`Logo ${index}`}
-              className={`h-[60px] sm:h-[46px] 3xl:h-[80px] ${darkMode ? "invert" : ""}`}
-              draggable="false"
-              onDragStart={(e) => e.preventDefault()}
-            />
-          ))}
+          {images.map((src, index) => {
+            const commonProps = {
+              key: index,
+              src,
+              alt: `Logo ${index}`,
+              className: `h-[60px] sm:h-[46px] 3xl:h-[80px] ${darkMode ? "invert" : ""}`,
+              draggable: false,
+              onDragStart: (e) => e.preventDefault(),
+            };
+
+            // Animate W.svg (index 0) from right after all WS 3–8 finish
+            if (index === 0) {
+              return (
+                <motion.img
+                  {...commonProps}
+                  initial={{ x: 100, opacity: 0 }}
+                  animate={thirdAnimated ? { x: 0, opacity: 1 } : {}}
+                  transition={{ duration: 0.8 }}
+                  style={{ zIndex: 6 }}
+                />
+              );
+            }
+
+            // S.svg (index 1) static
+            if (index === 1) {
+              return <img {...commonProps} />;
+            }
+
+            // WS 1 (index 2): Drop from top
+            if (index === 2) {
+              return (
+                <motion.img
+                  {...commonProps}
+                  initial={{ y: -200, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  transition={{ duration: 1 }}
+                  onAnimationComplete={() => setFirstAnimated(true)}
+                  style={{ zIndex: 10 }}
+                />
+              );
+            }
+
+            // WS 2 (index 3): Slide from left after WS 1
+            if (index === 3) {
+              return (
+                <motion.img
+                  {...commonProps}
+                  initial={{ x: -60, opacity: 0 }}
+                  animate={firstAnimated ? { x: 0, opacity: 1 } : {}}
+                  transition={{ duration: 0.8 }}
+                  onAnimationComplete={() => setSecondAnimated(true)}
+                  style={{ zIndex: 5 }}
+                />
+              );
+            }
+
+            // WS 3–8 (index 4–9): One by one after WS 2
+            if (index >= 4 && index <= 9) {
+              return (
+                <motion.img
+                  {...commonProps}
+                  initial={{ x: -50, opacity: 0 }}
+                  animate={secondAnimated ? { x: 0, opacity: 1 } : {}}
+                  transition={{ duration: 0.6, delay: 0.2 * (index - 4) }}
+                  onAnimationComplete={() =>
+                    setWs3To8Completed((prev) => prev + 1)
+                  }
+                  style={{ zIndex: 4 }}
+                />
+              );
+            }
+
+            return <img {...commonProps} />;
+          })}
         </div>
       </motion.div>
 
@@ -74,7 +145,7 @@ export default function Content({ fade, darkMode }) {
         </AnimatePresence>
       </div>
 
-      {/* Countdown on the side */}
+      {/* Countdown */}
       <div className="absolute top-1/2 -translate-y-1/2 right-[2px] sm:right-[30px] 3xl:right-[50px] w-[70px] sm:w-[122.31px] lg:w-[80px] 3xl:w-[90px]">
         <Countdown tab={tab} darkMode={darkMode} />
       </div>
