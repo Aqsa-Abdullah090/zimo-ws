@@ -72,7 +72,7 @@ useEffect(() => {
               key: index,
               src,
               alt: `Logo ${index}`,
-              className: `h-[60px] sm:h-[46px] 3xl:h-[80px] ${
+              className: `h-[36px] sm:h-[45px] 3xl:h-[54px] ${
                 darkMode ? "invert" : ""
               }`,
               draggable: false,
