@@ -75,9 +75,7 @@ const CountdownItem = ({ value, icon }) => {
       <img
         src={icon}
         alt="unit"
-        className={`w-[12px] lg:w-[20px] 3xl:w-[30px] object-contain ${
-          isDayIcon ? "mb-[10px]" : ""
-        }`}
+        className={`w-[12px] lg:w-[20px] 3xl:w-[30px] object-contain `}
         draggable="false"
       />
       <span className="text-[15px] lg:text-[26px] 3xl:text-[40px] tracking-[4px] rotate-[90deg] font-Lato">
