@@ -3,7 +3,7 @@ import HoldingPage from "../components/holding/holdingPage";
 import META_TAGS from "../lib/meta_tags";
 
 export default function Page() {
-  const { title, author, desc, image } = META_TAGS.main;
+  const { title, author, desc, image } = META_TAGS.pages.main;
 
   return (
     <>
@@ -23,8 +23,17 @@ export default function Page() {
         <meta name="twitter:image" content={image} />
         <meta name="twitter:card" content="summary_large_image" />
 
-        {/* Favicon */}
-        <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon" />
+        {/* favicon */}
+        <link
+          rel="shortcut icon"
+          href="/assets/meta/favicon.ico"
+          type="image/x-icon"
+        />
+        <link
+          rel="icon"
+          href="/assets/meta/favicon.ico"
+          type="image/x-icon"
+        />
       </Head>
       <HoldingPage />
     </>
